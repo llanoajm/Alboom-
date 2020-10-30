@@ -9,7 +9,7 @@ import UIKit
 
 class CollectionViewController: UICollectionViewController {
     var album = ""
-    var albumArray:[String] = ["Familia", "Viajes", "Yosemite", "Mojave"]
+    var albumArray:[String] = []
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
@@ -46,6 +46,7 @@ class CollectionViewController: UICollectionViewController {
         if segue.identifier == "AlbumToPhoto"{
             let photoVC = segue.destination as! PhotosViewController
             photoVC.album = self.album
+            photoVC.commentKey = "commentsFor" + self.album
             print(album)
         }
     }
