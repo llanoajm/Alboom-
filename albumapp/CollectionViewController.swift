@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 class CollectionViewController: UICollectionViewController {
     var album = ""
     var albumArray:[String] = []
     let defaults = UserDefaults.standard
+//    var deletingHidden = false
+    
+    
+    @IBOutlet weak var txtLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,21 +29,27 @@ class CollectionViewController: UICollectionViewController {
         return albumArray.count
     }
     
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = UICollectionViewCell()
         
-        if let albumCell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as? AlbumCell{
-            albumCell.configure(with: albumArray[indexPath.row])
-            cell = albumCell
-        }
+         let albumCell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! SwipeCollectionViewCell
         
+        albumCell.delegate = self
         
-        return cell
+        let label = albumCell.viewWithTag(1) as! UILabel
+        
+        label.text = albumArray[indexPath.row]
+//            albumCell.configure(with: albumArray[indexPath.row])
+        
+        return albumCell
+        
     }
+    
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected \(albumArray[indexPath.row])")
         album = albumArray[indexPath.row]
-        
+
+        print("didSelectItem")
         performSegue(withIdentifier: "AlbumToPhoto", sender: self)
     }
     
@@ -47,7 +58,7 @@ class CollectionViewController: UICollectionViewController {
             let photoVC = segue.destination as! PhotosViewController
             photoVC.album = self.album
             photoVC.commentKey = "commentsFor" + self.album
-            print(album)
+            
         }
     }
     
@@ -79,5 +90,49 @@ class CollectionViewController: UICollectionViewController {
     }
     
     
+    @IBAction func startDeletingPressed(_ sender: Any) {
+//        if deletingHidden == true{
+//            deletingHidden = false
+//
+//        }
+//        else if deletingHidden == false{
+//            deletingHidden = true
+//
+//        }
 
+    }
+    
+    
+    
+
+}
+extension CollectionViewController: SwipeCollectionViewCellDelegate{
+    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [self] action, indexPath in
+            
+            let photosVC = PhotosViewController()
+            
+            albumArray.remove(at: indexPath.row)
+            self.defaults.set(self.albumArray, forKey: "AlbumsArray")
+            defaults.removeObject(forKey: album)
+            defaults.removeObject(forKey: "commentsFor\(album)")
+            
+            let comments = photosVC.comments
+            
+            
+            collectionView.reloadData()
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "delete-icon")
+
+        return [deleteAction]
+        
+    }
+    
+    
 }

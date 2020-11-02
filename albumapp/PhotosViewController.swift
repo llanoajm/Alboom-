@@ -18,6 +18,7 @@ class PhotosViewController: UICollectionViewController {
     var imageID: String = ""
 //    var comment: String = ""
     var comments: [String] = []
+    var commentsArray: [String] = []
     
     var commentKey: String!
     var presentIndexPathRow: Int!
@@ -57,7 +58,6 @@ class PhotosViewController: UICollectionViewController {
             
             presentIndexPathRow = indexPath.row
             
-            print("the file is: \(photoArray[indexPath.row])")
             
             photoCell.configure(with: UIImage(contentsOfFile: photoArray[indexPath.row])!)
             
@@ -199,7 +199,6 @@ extension PhotosViewController: UITextFieldDelegate{
         defaults.set(comments, forKey: commentKey)
         collectionView.reloadData()
         if textField.text != ""{
-            textField.placeholder = "Edit comment"
         textField.alpha = 0.5
         }
         textField.text = ""
