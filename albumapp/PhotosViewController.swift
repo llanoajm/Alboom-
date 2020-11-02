@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 class PhotosViewController: UICollectionViewController {
     
@@ -51,48 +52,32 @@ class PhotosViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = UICollectionViewCell()
+            
+            let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! SwipeCollectionViewCell
+                
+            photoCell.delegate = self
+            
+            let label = photoCell.viewWithTag(2) as! UILabel
+            
+            label.text = comments[indexPath.row]
+            
+            let imgView = photoCell.viewWithTag(3) as! UIImageView
+            
+            imgView.image = UIImage(contentsOfFile: photoArray[indexPath.row])!
         
-        if let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as? PhotoCell{
+        let txtField = photoCell.viewWithTag(4) as! UITextField
+        txtField.delegate = self
+        
+        presentIndexPathRow = indexPath.row
+        
             
             
-            presentIndexPathRow = indexPath.row
-            
-            
-            photoCell.configure(with: UIImage(contentsOfFile: photoArray[indexPath.row])!)
-            
-//            if indexPath.row != 0{
-//                photoCell.configureText(with: comments[indexPath.row - catchUp])
-//            }
-//            else{
-//                photoCell.configureText(with: comments[indexPath.row])
-//            }
-            
-
-           
-            
-//            if photoArray.count > comments.count{
-//
-//            }
-//            else{
-//                photoCell.configureText(with: comments[indexPath.row])
-//
-               
-            
-                photoCell.configureText(with: comments[indexPath.row])
-            
-            
+    //            photoCell.txtField.delegate = self
             
 
 
- 
-            photoCell.txtField.delegate = self
-            cell = photoCell
+            return photoCell
         }
-
-
-        return cell
-    }
 
     
     @IBAction func addPhotoPressed(_ sender: UIBarButtonItem) {
@@ -214,3 +199,30 @@ extension PhotosViewController: UITextFieldDelegate{
     
     
 }
+
+extension PhotosViewController: SwipeCollectionViewCellDelegate{
+    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [self] action, indexPath in
+            
+            photoArray.remove(at: indexPath.row)
+            self.defaults.set(self.photoArray, forKey: album)
+            
+            comments.remove(at: indexPath.row)
+            self.defaults.set(self.comments, forKey: "commentsFor\(String(describing: album))")
+            collectionView.reloadData()
+           
+    }
+        
+        
+        deleteAction.image = UIImage(named: "delete-icon")
+
+        return [deleteAction]
+    
+}
+    
+
+}
+
+

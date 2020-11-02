@@ -107,6 +107,7 @@ class CollectionViewController: UICollectionViewController {
 
 }
 extension CollectionViewController: SwipeCollectionViewCellDelegate{
+    
     func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         
@@ -133,6 +134,10 @@ extension CollectionViewController: SwipeCollectionViewCellDelegate{
         return [deleteAction]
         
     }
-    
+//    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+//        var options = SwipeOptions()
+//        options.expansionStyle = .destructive
+//        return options
+//    }
     
 }
