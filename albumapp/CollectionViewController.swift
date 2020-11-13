@@ -23,6 +23,7 @@ class CollectionViewController: UICollectionViewController {
         if let items = (defaults.array(forKey: "AlbumsArray") as? [String]){
             albumArray = items
         }
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -122,10 +123,10 @@ extension CollectionViewController: SwipeCollectionViewCellDelegate{
             defaults.removeObject(forKey: album)
             defaults.removeObject(forKey: "commentsFor\(album)")
             
-            let comments = photosVC.comments
+//            let comments = photosVC.comments
             
             
-            collectionView.reloadData()
+//            collectionView.reloadData()
         }
         
         // customize the action appearance
@@ -134,10 +135,9 @@ extension CollectionViewController: SwipeCollectionViewCellDelegate{
         return [deleteAction]
         
     }
-//    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-//        var options = SwipeOptions()
-//        options.expansionStyle = .destructive
-//        return options
-//    }
-    
+    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        return options
+    }
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,8 @@
 		882614ED253F0AF4005EE460 /* albumappUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882614EC253F0AF4005EE460 /* albumappUITests.swift */; };
 		88261501253F0FAE005EE460 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88261500253F0FAE005EE460 /* CollectionViewController.swift */; };
 		88261506253F1316005EE460 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88261505253F1316005EE460 /* AlbumCell.swift */; };
+		8832B8922555F754004D3173 /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8832B8912555F754004D3173 /* NewViewController.swift */; };
+		8832B897255B4000004D3173 /* ScrollCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8832B896255B4000004D3173 /* ScrollCollection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		882614EE253F0AF4005EE460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88261500253F0FAE005EE460 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		88261505253F1316005EE460 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
+		8832B8912555F754004D3173 /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
+		8832B896255B4000004D3173 /* ScrollCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollCollection.swift; sourceTree = "<group>"; };
 		8CAD761DF636BB754A0AD92B /* Pods-albumapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-albumapp.release.xcconfig"; path = "Target Support Files/Pods-albumapp/Pods-albumapp.release.xcconfig"; sourceTree = "<group>"; };
 		9031B046218E5C66303061FD /* Pods_albumapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_albumapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -93,7 +97,6 @@
 				3E701C62C9376FF5A2E4C618 /* Pods-albumapp.debug.xcconfig */,
 				8CAD761DF636BB754A0AD92B /* Pods-albumapp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -132,6 +135,8 @@
 				88004CB6254084C800E0E54D /* PhotoCell.swift */,
 				88004CB1253FE5E300E0E54D /* PhotosViewController.swift */,
 				882614D8253F0AF4005EE460 /* Info.plist */,
+				8832B8912555F754004D3173 /* NewViewController.swift */,
+				8832B896255B4000004D3173 /* ScrollCollection.swift */,
 			);
 			path = albumapp;
 			sourceTree = "<group>";
@@ -338,7 +343,9 @@
 			files = (
 				88261501253F0FAE005EE460 /* CollectionViewController.swift in Sources */,
 				882614CB253F0AF3005EE460 /* AppDelegate.swift in Sources */,
+				8832B8922555F754004D3173 /* NewViewController.swift in Sources */,
 				882614CD253F0AF3005EE460 /* SceneDelegate.swift in Sources */,
+				8832B897255B4000004D3173 /* ScrollCollection.swift in Sources */,
 				88261506253F1316005EE460 /* AlbumCell.swift in Sources */,
 				88004CB7254084C800E0E54D /* PhotoCell.swift in Sources */,
 				88004CB2253FE5E300E0E54D /* PhotosViewController.swift in Sources */,

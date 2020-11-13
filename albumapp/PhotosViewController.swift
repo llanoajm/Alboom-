@@ -30,12 +30,13 @@ class PhotosViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) 
         header.title = album
         
         if let items = (defaults.array(forKey: album) as? [String]){
         photoArray = items}
         
-        self.navigationItem.hidesBackButton = true
+ 
         
 //        if let itemsTwo = (defaults.string(forKey: imageID)){
 //            comment = itemsTwo
@@ -50,9 +51,22 @@ class PhotosViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoArray.count
     }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("selectedPhoto")
+        
+//        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let secondVC = storyboard?.instantiateViewController(identifier: "ScrollCollection")as! ScrollCollection
+        
+        secondVC.photos = photoArray
+        secondVC.photoComments = comments
+        self.navigationController?.pushViewController(secondVC, animated: true)
+        
+    }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
+        print("cell was created")
             let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! SwipeCollectionViewCell
                 
             photoCell.delegate = self
@@ -184,7 +198,7 @@ extension PhotosViewController: UITextFieldDelegate{
         defaults.set(comments, forKey: commentKey)
         collectionView.reloadData()
         if textField.text != ""{
-        textField.alpha = 0.5
+        textField.alpha = 0.2
         }
         textField.text = ""
         
@@ -211,7 +225,7 @@ extension PhotosViewController: SwipeCollectionViewCellDelegate{
             
             comments.remove(at: indexPath.row)
             self.defaults.set(self.comments, forKey: "commentsFor\(String(describing: album))")
-            collectionView.reloadData()
+//            collectionView.reloadData()
            
     }
         
@@ -221,7 +235,12 @@ extension PhotosViewController: SwipeCollectionViewCellDelegate{
         return [deleteAction]
     
 }
-    
+   
+    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        return options
+    }
 
 }
 
