@@ -40,3 +40,11 @@ class ScrollCollection: UICollectionViewController {
     
     
 }
+extension ScrollCollection: UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         let itemWidth = collectionView.bounds.width
+         let itemHeight = collectionView.bounds.height
+         return CGSize(width: itemWidth, height: itemHeight)
+ }
+}
