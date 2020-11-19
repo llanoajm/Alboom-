@@ -12,13 +12,19 @@ import UIKit
 class ScrollCollection: UICollectionViewController {
     var photos: [String]!
     var photoComments: [String]!
-
+    var selectedIndexPath: IndexPath!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
     
         print("View did load")
         print(photoComments)
+        
+//        let cellRect = c
+//
+        collectionView.scrollToItem(at: selectedIndexPath, at: .centeredHorizontally, animated: true)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

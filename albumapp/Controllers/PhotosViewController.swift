@@ -12,54 +12,67 @@ class PhotosViewController: UICollectionViewController {
     
     
     @IBOutlet weak var header: UINavigationItem!
+    @IBOutlet weak var middleLabel: UILabel!
     
     var album: String!
     let defaults = UserDefaults.standard
+    
+    //Deprecated
+    var activeComment: String!
     var photoArray: [String] = []
     var imageID: String = ""
-//    var comment: String = ""
     var comments: [String] = []
     var commentsArray: [String] = []
-    
     var commentKey: String!
     var presentIndexPathRow: Int!
     
+    var photoItems = [PhotoItem]()
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) 
+        collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
         header.title = album
         
+        
+        //Deprecated
         if let items = (defaults.array(forKey: album) as? [String]){
         photoArray = items}
         
- 
-        
-//        if let itemsTwo = (defaults.string(forKey: imageID)){
-//            comment = itemsTwo
-//        }
-        
+        //Deprecated
         if let itemsTwo = (defaults.array(forKey: commentKey) as? [String]){
         comments = itemsTwo
          }
-        
+        if photoArray.count == 0{
+            middleLabel.text = "Add your first photo"
+        }
+        else{
+            middleLabel.text = ""
+        }
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoArray.count
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print(comments)
+        
         print("selectedPhoto")
         
 //        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
         let secondVC = storyboard?.instantiateViewController(identifier: "ScrollCollection")as! ScrollCollection
         
+        //Deprecated
         secondVC.photos = photoArray
         secondVC.photoComments = comments
+        secondVC.selectedIndexPath = indexPath
+        
         self.navigationController?.pushViewController(secondVC, animated: true)
         
     }
@@ -73,16 +86,26 @@ class PhotosViewController: UICollectionViewController {
             
             let label = photoCell.viewWithTag(2) as! UILabel
             
+        //Deprecated
             label.text = comments[indexPath.row]
             
             let imgView = photoCell.viewWithTag(3) as! UIImageView
             
+        //Deprecated
             imgView.image = UIImage(contentsOfFile: photoArray[indexPath.row])!
         
         let txtField = photoCell.viewWithTag(4) as! UITextField
         txtField.delegate = self
         
+        txtField.text = comments[indexPath.row]
+        txtField.alpha = 0.2
+        
         presentIndexPathRow = indexPath.row
+        
+//        if comments[indexPath.row] == "New Photo \(Int())"{
+//            label.alpha = 0
+//        }
+//        else{label.alpha = 1}
         
             
             
@@ -110,8 +133,9 @@ class PhotosViewController: UICollectionViewController {
 
 extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        //Delete if bug
-        comments.append("")
+        
+        //Deprecated
+        comments.append("New Photo \((comments.count+1))")
         
         if let image = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage{
            // photoArray.append(image)//deprecated*
@@ -130,14 +154,12 @@ extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationCon
                      
                      print(url)
                     
+                    //Deprecated
                     photoArray.append(url.path)
                     
                     imageID = url.path
                     
-                   print(photoArray.count)
-                    
-                    
-                    
+                    //Deprecated
                    self.defaults.set(self.photoArray, forKey: album)
                      
                     self.collectionView.reloadData()
@@ -148,15 +170,16 @@ extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationCon
                     
                  }
              }
-             
-            
-            
-            
-            print(photoArray.count)
-            //self.collectionView.reloadData()
             
         }
         picker.dismiss(animated: true, completion: nil)
+        
+        if photoArray.count == 0{
+            middleLabel.text = "Add your first photo"
+        }
+        else{
+            middleLabel.text = ""
+        }
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
@@ -167,43 +190,47 @@ extension PhotosViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.alpha = 1.0
+        
+        activeComment = textField.text!
+        print(activeComment!)
+
+        
     }
     
-//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-//        if textField.text != ""{
-//            return true
-//        }
-//        else{
-//            textField.placeholder = "Comment something"
-//            return false
-//        }
-//    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text!.count > 2{
-            return true
-        }
-        else{
-            return false
-        }
-    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         //prone to errors
+        //Deprecated
+        
+        
+//        print("THE INDEXPATH.ROW IS \(indexPath.row)")
+        
+        
+        presentIndexPathRow = comments.firstIndex(of: activeComment)
+        
+        print("The index Path Row is : \(presentIndexPathRow!)")
+        
+        
         comments.remove(at: presentIndexPathRow)
-        comments.append(textField.text!)
-        print("the imageID is \(imageID)")
-//        defaults.set(comment, forKey: imageID)
+        comments.insert(textField.text!, at: (presentIndexPathRow))
+        
+        
+        
+        //Deprecated
         defaults.set(comments, forKey: commentKey)
+        
         collectionView.reloadData()
         if textField.text != ""{
         textField.alpha = 0.2
         }
-        textField.text = ""
         
         
     }
+    
+    
+    
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
@@ -220,13 +247,32 @@ extension PhotosViewController: SwipeCollectionViewCellDelegate{
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [self] action, indexPath in
             
-            photoArray.remove(at: indexPath.row)
-            self.defaults.set(self.photoArray, forKey: album)
             
-            comments.remove(at: indexPath.row)
-            self.defaults.set(self.comments, forKey: "commentsFor\(String(describing: album))")
-//            collectionView.reloadData()
-           
+            let alert = UIAlertController(title: "Are you sure you want to delete this photo?", message: "", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Yes", style: .default) { (action) in
+                //Deprecated
+                photoArray.remove(at: indexPath.row)
+                self.defaults.set(self.photoArray, forKey: album)
+                
+                //Deprecated
+                comments.remove(at: indexPath.row)
+                self.defaults.set(self.comments, forKey: "commentsFor\(String(describing: album))")
+                collectionView.reloadData()
+                if photoArray.count == 0{
+                    middleLabel.text = "Add your first photo"
+                }
+                else{
+                    middleLabel.text = ""
+                }
+            }
+            alert.addAction(action)
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            present(alert, animated: true, completion: nil)
+            
+            
     }
         
         

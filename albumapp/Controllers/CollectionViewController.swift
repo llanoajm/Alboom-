@@ -15,6 +15,10 @@ class CollectionViewController: UICollectionViewController {
 //    var deletingHidden = false
     
     
+    @IBOutlet weak var albumIcon: UIImageView!
+    
+    @IBOutlet weak var middleLabel: UILabel!
+    
     @IBOutlet weak var txtLabel: UILabel!
     
     override func viewDidLoad() {
@@ -22,6 +26,13 @@ class CollectionViewController: UICollectionViewController {
         //Setting albumsArray to equal the array in UserDefaults.
         if let items = (defaults.array(forKey: "AlbumsArray") as? [String]){
             albumArray = items
+        }
+        
+        if albumArray.count == 0{
+            middleLabel.text = "Add your first album"
+        }
+        else{
+            middleLabel.text = ""
         }
         
     }
@@ -75,6 +86,14 @@ class CollectionViewController: UICollectionViewController {
             self.defaults.set(self.albumArray, forKey: "AlbumsArray")
             
             self.collectionView.reloadData()
+            
+            if self.albumArray.count == 0{
+                self.middleLabel.text = "Add your first album"
+            }
+            else{
+                self.middleLabel.text = ""
+            }
+
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Add a title to your album"
@@ -111,30 +130,82 @@ extension CollectionViewController: SwipeCollectionViewCellDelegate{
     
     func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
+        var action = [SwipeAction]()
+//        guard orientation == .right else { return nil }
         
-        guard orientation == .right else { return nil }
+        
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [self] action, indexPath in
             
-            let photosVC = PhotosViewController()
             
-            albumArray.remove(at: indexPath.row)
-            self.defaults.set(self.albumArray, forKey: "AlbumsArray")
-            defaults.removeObject(forKey: album)
-            defaults.removeObject(forKey: "commentsFor\(album)")
+            let alert = UIAlertController(title: "Are you sure you want to delete \(albumArray[indexPath.row])?", message: "", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Yes", style: .default) { (action) in
+             
+                albumArray.remove(at: indexPath.row)
+                self.defaults.set(self.albumArray, forKey: "AlbumsArray")
+                defaults.removeObject(forKey: album)
+                defaults.removeObject(forKey: "commentsFor\(album)")
+                collectionView.reloadData()
+                if albumArray.count == 0{
+                    middleLabel.text = "Add your first album"
+                }
+                else{
+                    middleLabel.text = ""
+                }
+            }
+            alert.addAction(action)
             
-//            let comments = photosVC.comments
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
-            
-//            collectionView.reloadData()
+            present(alert, animated: true, completion: nil)
+
         }
+        
+//        let editAction = SwipeAction(style: .destructive, title: "Change Album Icon?") { [self] action, indexPath in
+//
+//            let photosVC = PhotosViewController()
+//
+//            let albumCell = collectionView.cellForItem(at: indexPath)
+//
+//
+//            let albumIcon = albumCell?.viewWithTag(20) as! UIImageView
+//
+//            let photoArray = photosVC.photoArray
+//
+//            if photoArray.count > 0{
+//                albumIcon.image = UIImage(contentsOfFile:photoArray[0])
+//                print("THERE ARE PHOTOS IN THE ALBUM")
+//            }
+//            else if photoArray.count < 0{
+//                print("THERE ARE NO PHOTOS IN THE ALBUM")
+//            }
+//            collectionView.reloadData()
+//
+//
+//
+//        }
+        
+        
+        
+        if orientation == .right{
+            action = [deleteAction]
+            
+        }
+        
+//        if orientation == .left{
+//            action = [editAction]
+//        }
         
         // customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
+        
 
-        return [deleteAction]
+    return action
         
     }
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = .destructive
