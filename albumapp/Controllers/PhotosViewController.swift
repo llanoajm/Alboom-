@@ -7,9 +7,22 @@
 
 import UIKit
 import SwipeCellKit
+import UnsplashPhotoPicker
 
 class PhotosViewController: UICollectionViewController {
     
+    
+    
+    private var shadowLayer: CAShapeLayer!
+    private var cornerRadius: CGFloat = 20.0
+    private var fillColor: UIColor = .blue
+    
+    let configuration = UnsplashPhotoPickerConfiguration(
+      accessKey: "NzKpTgzqy1-1fihxXYksBEyTzm7YMqrryq_MtGCNYS4",
+      secretKey: "UsY8V4uaiCrdQXXhjX8QnT36g_gF6OoX5M86Ac3ixhg"
+    )
+    
+    let containerView = UIView()
     
     @IBOutlet weak var header: UINavigationItem!
     @IBOutlet weak var middleLabel: UILabel!
@@ -25,13 +38,14 @@ class PhotosViewController: UICollectionViewController {
     var commentsArray: [String] = []
     var commentKey: String!
     var presentIndexPathRow: Int!
-    
-    var photoItems = [PhotoItem]()
-    
+    var dataManaging = DataManaging()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        dataManaging.delegate = self
         
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
@@ -52,6 +66,13 @@ class PhotosViewController: UICollectionViewController {
         else{
             middleLabel.text = ""
         }
+        //Looks for single or multiple taps.
+//         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+
+//        view.addGestureRecognizer(tap)
 
     }
     
@@ -62,9 +83,6 @@ class PhotosViewController: UICollectionViewController {
         
         print(comments)
         
-        print("selectedPhoto")
-        
-//        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
         let secondVC = storyboard?.instantiateViewController(identifier: "ScrollCollection")as! ScrollCollection
         
@@ -78,6 +96,8 @@ class PhotosViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+
             
         print("cell was created")
             let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! SwipeCollectionViewCell
@@ -86,31 +106,62 @@ class PhotosViewController: UICollectionViewController {
             
             let label = photoCell.viewWithTag(2) as! UILabel
             
+    
         //Deprecated
+        if comments[indexPath.row].count != 0{
             label.text = comments[indexPath.row]
+        }
+            
+        
             
             let imgView = photoCell.viewWithTag(3) as! UIImageView
             
         //Deprecated
-            imgView.image = UIImage(contentsOfFile: photoArray[indexPath.row])!
         
+        imgView.image = UIImage(contentsOfFile: photoArray[indexPath.row])
+        
+                    
         let txtField = photoCell.viewWithTag(4) as! UITextField
         txtField.delegate = self
         
         txtField.text = comments[indexPath.row]
-        txtField.alpha = 0.2
+        
+            
+        
+        for num in 0...photoArray.count{
+            let photoNumber = String(num)
+           
+            if txtField.text == "New Photo " + photoNumber{
+                
+                label.alpha = 0
+            }
+            else if txtField.text != "New Photo " + String(num){
+                label.alpha = 1
+            }
+        }
         
         presentIndexPathRow = indexPath.row
         
-//        if comments[indexPath.row] == "New Photo \(Int())"{
-//            label.alpha = 0
-//        }
-//        else{label.alpha = 1}
+
         
-            
-            
-    //            photoCell.txtField.delegate = self
-            
+
+        photoCell.layer.cornerRadius = 15.0
+photoCell.layer.borderWidth = 5.0
+        photoCell.layer.borderColor = UIColor.clear.cgColor
+        photoCell.layer.masksToBounds = true
+
+             // cell shadow section
+        photoCell.contentView.layer.cornerRadius = 15.0
+        photoCell.contentView.layer.borderWidth = 5.0
+        photoCell.contentView.layer.borderColor = UIColor.clear.cgColor
+       photoCell.contentView.layer.masksToBounds = true
+        photoCell.layer.shadowColor = UIColor.gray.cgColor
+             photoCell.layer.shadowOffset = CGSize(width: 0, height: 0.0)
+        photoCell.layer.shadowRadius = 6.0
+        photoCell.layer.shadowOpacity = 0.6
+        photoCell.layer.cornerRadius = 15.0
+        photoCell.layer.masksToBounds = false
+        photoCell.layer.shadowPath = UIBezierPath(roundedRect: photoCell.bounds, cornerRadius: photoCell.contentView.layer.cornerRadius).cgPath
 
 
             return photoCell
@@ -121,21 +172,43 @@ class PhotosViewController: UICollectionViewController {
        
         
         let vc = UIImagePickerController()
+        
+        let photoPicker = UnsplashPhotoPicker(configuration: configuration)
+        photoPicker.photoPickerDelegate = self
+        
+        
+        
         vc.sourceType = .photoLibrary
         vc.delegate = self
         vc.allowsEditing = true
-        present(vc, animated: true)
+        
+        let alert = UIAlertController(title: "Where do you want to select your photos from?", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Library", style: .default) { (action) in
+            
+            self.present(vc, animated: true)
+        }
+        let otherAction = UIAlertAction(title: "Unsplash", style: .default) { (action) in
+            self.present(photoPicker, animated: true, completion: nil)
+        }
+        alert.addAction(action)
+        alert.addAction(otherAction)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+        
     
     
 }
-    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
 }
 
 extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        //Deprecated
         comments.append("New Photo \((comments.count+1))")
+//        comments.append("")
         
         if let image = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage{
            // photoArray.append(image)//deprecated*
@@ -189,16 +262,22 @@ extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationCon
 extension PhotosViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.alpha = 1.0
+        textField.alpha = 0.5
+        
+        textField.selectAll(nil)
+        
         
         activeComment = textField.text!
         print(activeComment!)
+        
 
         
     }
     
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        textField.alpha = 0.1
         
         //prone to errors
         //Deprecated
@@ -209,7 +288,7 @@ extension PhotosViewController: UITextFieldDelegate{
         
         presentIndexPathRow = comments.firstIndex(of: activeComment)
         
-        print("The index Path Row is : \(presentIndexPathRow!)")
+//        print("The index Path Row is : \(presentIndexPathRow!)")
         
         
         comments.remove(at: presentIndexPathRow)
@@ -289,6 +368,32 @@ extension PhotosViewController: SwipeCollectionViewCellDelegate{
     }
 
 }
+extension PhotosViewController: UnsplashPhotoPickerDelegate{
+    func unsplashPhotoPicker(_ photoPicker: UnsplashPhotoPicker, didSelectPhotos photos: [UnsplashPhoto]) {
+        comments.append("New Photo \((comments.count+1))")
+//        comments.append("")
+        
+        
+        
+    }
+    
+    func unsplashPhotoPickerDidCancel(_ photoPicker: UnsplashPhotoPicker) {
+        photoPicker.dismiss(animated: true, completion: nil)
+    }
+    
+    
+}
 
 
 
+extension PhotosViewController: DataManagingDelegate{
+    func didUpdateData(_ dataManaging: DataManaging, data: DataModel) {
+        
+    }
+    
+    func didFailWithError(error: Error) {
+        
+    }
+    
+    
+}
