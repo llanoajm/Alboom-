@@ -52,11 +52,11 @@ class PhotosViewController: UICollectionViewController {
         header.title = album
         
         
-        //Deprecated
+        //Deprecating
         if let items = (defaults.array(forKey: album) as? [String]){
         photoArray = items}
         
-        //Deprecated
+        //Deprecating
         if let itemsTwo = (defaults.array(forKey: commentKey) as? [String]){
         comments = itemsTwo
          }
@@ -207,6 +207,7 @@ photoCell.layer.borderWidth = 5.0
 extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
+        let collectView = CollectionViewController()
         comments.append("New Photo \((comments.count+1))")
 //        comments.append("")
         
@@ -253,6 +254,7 @@ extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationCon
         else{
             middleLabel.text = ""
         }
+//        collectView.collectionView.reloadData()
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
@@ -371,6 +373,7 @@ extension PhotosViewController: SwipeCollectionViewCellDelegate{
 extension PhotosViewController: UnsplashPhotoPickerDelegate{
     func unsplashPhotoPicker(_ photoPicker: UnsplashPhotoPicker, didSelectPhotos photos: [UnsplashPhoto]) {
         comments.append("New Photo \((comments.count+1))")
+        
 //        comments.append("")
         
         

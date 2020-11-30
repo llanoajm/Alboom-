@@ -17,12 +17,15 @@ protocol DataManagingDelegate{
 //4. Start the task
 
 
+
 struct DataManaging{
-//    let dataURL = "https://reqres.in/api/users?page=1"
-    let dataURL = "https://reqres.in/api/users/2"
+    let dataURL = "https://reqres.in/api/users?page=1"
+//    let dataURL = "https://reqres.in/api/users/2"
     var delegate: DataManagingDelegate?
     
     func fetchData(){
+        
+        
         
         let urlString = dataURL//"\(dataURL)&page=\(page)"
         
@@ -60,16 +63,35 @@ struct DataManaging{
         
         let decoder = JSONDecoder()
         do {
+            
+            var theData = DataModel(userIds: [1], userEmails: [""], avatarImages: [""], first_names: [""])
             let decodedData = try decoder.decode(UserData.self, from: userData)
-            let id = decodedData.data.id
-            let email = decodedData.data.email
-            let avatar = decodedData.data.avatar
-            let first_name = decodedData.data.first_name
-            let last_name = decodedData.data.last_name
+            var ids = [1]
+            var emails = [""]
+            var avatars = [""]
+            var first_names = [""]
+            var last_names = [""]
             
-            print(email)
+            for num in 0...decodedData.data.count - 1{
+                let id = decodedData.data[num].id
+                ids.append(id)
+                let email = decodedData.data[num].email
+                emails.append(email)
+                let avatar = decodedData.data[num].avatar
+                avatars.append(avatar)
+                let first_name = decodedData.data[num].first_name
+                first_names.append(first_name)
+                let last_name = decodedData.data[num].last_name
+                last_names.append(last_name)
+                print (email)
+                
+                
+            }
+            let thisData = DataModel(userIds: ids, userEmails: emails, avatarImages: avatars, first_names: first_names)
+            theData = thisData
             
-            let theData = DataModel(userId: id, userEmail: email, avatarImage: avatar, name: first_name + " " + last_name)
+            
+           
             
             return theData
             

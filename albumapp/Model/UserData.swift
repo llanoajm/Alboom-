@@ -8,7 +8,7 @@
 import Foundation
 struct UserData: Codable{
     
-    let data: Data
+    let data: [Data]
 }
 struct Data: Codable{
     let id : Int

@@ -8,8 +8,8 @@
 import Foundation
 struct DataModel{
     //"DataModel.swift already exists"
-    var userId: Int
-    var userEmail: String
-    var avatarImage: String
-    var name: String
+    var userIds: [Int]
+    var userEmails: [String]
+    var avatarImages: [String]
+    var first_names: [String]
 }
