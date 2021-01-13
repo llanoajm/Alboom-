@@ -97,9 +97,7 @@ class PhotosViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-
             
-        print("cell was created")
             let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! SwipeCollectionViewCell
                 
             photoCell.delegate = self
@@ -375,8 +373,6 @@ extension PhotosViewController: UnsplashPhotoPickerDelegate{
         comments.append("New Photo \((comments.count+1))")
         
 //        comments.append("")
-        
-        
         
     }
     

@@ -23,6 +23,8 @@
 		88AACF8525705A9600B564D8 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AACF8425705A9600B564D8 /* UserData.swift */; };
 		88AACF9225705C0C00B564D8 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AACF9125705C0C00B564D8 /* DataModel.swift */; };
 		88AACFA62574519C00B564D8 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AACFA52574519C00B564D8 /* MenuController.swift */; };
+		88D966F325AE84E2005ABFDB /* CharacterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D966F125AE84E2005ABFDB /* CharacterCollectionViewCell.swift */; };
+		88D966F425AE84E2005ABFDB /* CharacterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88D966F225AE84E2005ABFDB /* CharacterCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,8 @@
 		88AACF8425705A9600B564D8 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		88AACF9125705C0C00B564D8 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		88AACFA52574519C00B564D8 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		88D966F125AE84E2005ABFDB /* CharacterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCollectionViewCell.swift; sourceTree = "<group>"; };
+		88D966F225AE84E2005ABFDB /* CharacterCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CharacterCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CAD761DF636BB754A0AD92B /* Pods-albumapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-albumapp.release.xcconfig"; path = "Target Support Files/Pods-albumapp/Pods-albumapp.release.xcconfig"; sourceTree = "<group>"; };
 		9031B046218E5C66303061FD /* Pods_albumapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_albumapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -173,6 +177,8 @@
 			children = (
 				882614D0253F0AF3005EE460 /* Main.storyboard */,
 				882614D5253F0AF4005EE460 /* LaunchScreen.storyboard */,
+				88D966F125AE84E2005ABFDB /* CharacterCollectionViewCell.swift */,
+				88D966F225AE84E2005ABFDB /* CharacterCollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -302,6 +308,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88D966F425AE84E2005ABFDB /* CharacterCollectionViewCell.xib in Resources */,
 				882614D7253F0AF4005EE460 /* LaunchScreen.storyboard in Resources */,
 				882614D4253F0AF4005EE460 /* Assets.xcassets in Resources */,
 				882614D2253F0AF3005EE460 /* Main.storyboard in Resources */,
@@ -380,6 +387,7 @@
 				8832B897255B4000004D3173 /* ScrollCollection.swift in Sources */,
 				88004CB2253FE5E300E0E54D /* PhotosViewController.swift in Sources */,
 				88AACF7D2570501F00B564D8 /* DataManaging.swift in Sources */,
+				88D966F325AE84E2005ABFDB /* CharacterCollectionViewCell.swift in Sources */,
 				88A3B1CF256AED1D00DFB746 /* UnsplashPhotoPickerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,7 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3YZ68KUMHG;
 				INFOPLIST_FILE = albumapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -578,7 +586,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3YZ68KUMHG;
 				INFOPLIST_FILE = albumapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

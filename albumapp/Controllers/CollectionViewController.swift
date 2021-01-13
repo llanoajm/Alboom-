@@ -32,6 +32,7 @@ class CollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
 //        activityIndicator.isHidden = true
         dataManaging.delegate = self
         
