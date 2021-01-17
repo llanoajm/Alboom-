@@ -1,0 +1,24 @@
+PODS:
+  - SideMenu (6.5.0)
+  - SwipeCellKit (2.7.1)
+  - UnsplashPhotoPicker (1.1.1)
+
+DEPENDENCIES:
+  - SideMenu
+  - SwipeCellKit
+  - UnsplashPhotoPicker (~> 1.1.1)
+
+SPEC REPOS:
+  trunk:
+    - SideMenu
+    - SwipeCellKit
+    - UnsplashPhotoPicker
+
+SPEC CHECKSUMS:
+  SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
+  SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
+  UnsplashPhotoPicker: 86520e34cfded8fb4a41910bf87afe571906b4e3
+
+PODFILE CHECKSUM: b050fedb2130a6311bba11cca69603e4b3c778ad
+
+COCOAPODS: 1.9.1
